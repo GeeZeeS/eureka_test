@@ -2,28 +2,6 @@ version: '3.9'
 
 services:
 
-  web:
-    build: ./web
-    container_name: "eureka-web"
-    command: bash -c "python app.py db upgrade && python app.py"
-    volumes:
-      - ./web/:/web/
-    env_file:
-      - ./.env.dev
-    ports:
-      - "5000:5000"
-
-  machine:
-    build: ./machine
-    container_name: "eureka-machine"
-    command: python app.py
-    volumes:
-      - ./machine/:/machine/
-    env_file:
-      - ./.env.dev
-    ports:
-      - "5001:5001"
-
   db:
     image: postgres:14.0-alpine
     volumes:
@@ -32,6 +10,30 @@ services:
       - ./.env.dev
     ports:
       - "5432:5432"
+
+  web:
+    build: ./web
+    container_name: "eureka-web"
+    volumes:
+      - ./web/:/web/
+    env_file:
+      - ./.env.dev
+    ports:
+      - "5000:5000"
+    depends_on:
+      - db
+
+  machine:
+    build: ./machine
+    container_name: "eureka-machine"
+    volumes:
+      - ./machine/:/machine/
+    env_file:
+      - ./.env.dev
+    ports:
+      - "5001:5001"
+    depends_on:
+      - db
 
 volumes:
   postgres_data:

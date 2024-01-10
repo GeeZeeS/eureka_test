@@ -14,5 +14,6 @@ ENV PYTHONUNBUFFERED 1
 COPY requirements.txt .
 RUN pip install -r requirements.txt
 
+CMD ["sh", "-c", "sleep 5 && flask db upgrade && gunicorn --bind 0.0.0.0:5000 app:app"]
 # copy project
 COPY . .
