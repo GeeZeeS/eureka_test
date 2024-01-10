@@ -5,7 +5,7 @@ services:
   web:
     build: ./web
     container_name: "eureka-web"
-    command: python app.py
+    command: bash -c "python app.py db upgrade && python app.py"
     volumes:
       - ./web/:/web/
     env_file:
