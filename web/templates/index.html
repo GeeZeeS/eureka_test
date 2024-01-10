@@ -1,0 +1,54 @@
+{% extends 'admin/master.html' %}
+
+{% block body %}
+    <div class="container mt-4">
+        <div class="jumbotron">
+            <h1 class="display-4">Welcome!</h1>
+            <p class="lead">Here's a quick overview of the machine and order status.</p>
+        </div>
+
+        <div class="card mb-4">
+            <div class="card-header">
+                <h2>Machine Information</h2>
+            </div>
+            <div class="card-body">
+                <p class="card-text">Machine Status: <strong>{{ machine_data['status'] }}</strong></p>
+                <p class="card-text">Last Order Number: <strong>{{ machine_data['last_order_number'] }}</strong></p>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header">
+                <h2>Order Status Table</h2>
+            </div>
+            <div class="card-body">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Order Number</th>
+                            <th>Duration</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for order in orders %}
+                            <tr>
+                                <td>{{ order.number }}</td>
+                                <td>{{ order.duration }}</td>
+                                <td>
+                                    {% if order.status == 'DONE' %}
+                                        <span class="label label-success">{{ order.status }}</span>
+                                    {% elif order.status == 'IN_PROGRESS' %}
+                                        <span class="label label-warning">{{ order.status }}</span>
+                                    {% else %}
+                                        <span class="label label-default">{{ order.status }}</span>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+{% endblock %}
